@@ -11,11 +11,7 @@
         "guest_additions_mode": "disable",
         "guest_os_type": "Linux26_64",
         "vboxmanage": [
-            ["modifyvm", "{{.Name}}", "--memory", "1024"],
-            ["modifyvm", "{{.Name}}", "--boot1", "dvd", "--boot2", "disk"],
-            ["storageattach", "{{.Name}}", "--storagectl", "IDE Controller",
-                "--port", "0", "--device", "0",
-                "--type", "hdd", "--medium", "persistent2.vmdk"]
+            ["modifyvm", "{{.Name}}", "--memory", "1024"]
         ]
     }],
 
@@ -26,10 +22,10 @@
     }, {
         "type": "shell",
         "inline": [
-            "sudo cp /tmp/sshd_config /var/lib/boot2docker/ssh/sshd_config",
-            "sudo cp /tmp/vagrant_key.pub /var/lib/boot2docker/ssh/docker_authorized_keys",
-            "sudo chown docker:docker /var/lib/boot2docker/ssh/docker_authorized_keys",
-            "sudo chmod 0600 /var/lib/boot2docker/ssh/docker_authorized_keys"
+            "mkfs.ext4 -F -L boot2docker-data /dev/sda",
+            "sudo /etc/rc.d/automount",
+            "sudo cp /tmp/bootlocal.sh /var/lib/boot2docker/bootlocal.sh",
+            "sudo chmod +x /var/lib/boot2docker/bootlocal.sh"
         ]
     }],
 
