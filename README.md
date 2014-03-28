@@ -29,3 +29,11 @@ To build the box, first install the following prerequisites:
 
 Then, just run `make`. The resulting box will be named "boot2docker.box".
 The entire process to make the box takes about 20 seconds.
+
+## License
+
+[![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](http://creativecommons.org/publicdomain/zero/1.0/)  
+To the extent possible under law, the person who associated CC0 with this work has waived all copyright and related or neighboring rights to this work.
+
+- [boot2docker](http://boot2docker.io/) is under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
+- [Vagrant](http://www.vagrantup.com/): Copyright (c) 2010-2014 Mitchell Hashimoto, under the [MIT License](https://github.com/mitchellh/vagrant/blob/master/LICENSE)
