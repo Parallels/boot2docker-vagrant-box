@@ -1,12 +1,15 @@
-require Vagrant.source_root.join("plugins/provisioners/docker/cap/linux/docker_daemon_running.rb")
+docker_daemon_running = Vagrant.source_root.join("plugins/provisioners/docker/cap/linux/docker_daemon_running.rb")
+if File.exist?(docker_daemon_running)
+  require docker_daemon_running
 
-module VagrantPlugins
-  module Docker
-    module Cap
-      module Linux
-        module DockerDaemonRunning
-          def self.docker_daemon_running(machine)
-            machine.communicate.test("test -f /var/run/docker.pid")
+  module VagrantPlugins
+    module Docker
+      module Cap
+        module Linux
+          module DockerDaemonRunning
+            def self.docker_daemon_running(machine)
+              machine.communicate.test("test -f /var/run/docker.pid")
+            end
           end
         end
       end
