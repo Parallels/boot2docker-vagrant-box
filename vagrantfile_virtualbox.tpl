@@ -1,3 +1,19 @@
+require Vagrant.source_root.join("plugins/provisioners/docker/cap/linux/docker_daemon_running.rb")
+
+module VagrantPlugins
+  module Docker
+    module Cap
+      module Linux
+        module DockerDaemonRunning
+          def self.docker_daemon_running(machine)
+            machine.communicate.test("test -f /var/run/docker.pid")
+          end
+        end
+      end
+    end
+  end
+end
+
 Vagrant.configure("2") do |config|
   config.ssh.shell = "sh -l"
   config.ssh.username = "docker"
