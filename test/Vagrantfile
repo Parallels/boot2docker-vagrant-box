@@ -8,7 +8,12 @@ Vagrant.require_version ">= 1.5.0"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "boot2docker"
 
-  config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.provider :virtualbox do |vb, override|
+    override.vm.network "private_network", ip: "192.168.33.10"
+  end
+  config.vm.provider :parallels do |prl, override|
+    override.vm.network "private_network", ip: "192.168.34.10"
+  end
 
   config.vm.synced_folder ".", "/vagrant", type: "nfs"
 

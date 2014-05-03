@@ -1,5 +1,6 @@
 {
     "builders": [{
+        "name": "virtualbox",
         "type": "virtualbox-iso",
         "iso_url": "boot2docker.iso",
         "iso_checksum": "00be816fbd6b915247d8745b92ebdc77",
@@ -11,7 +12,22 @@
         "guest_additions_mode": "disable",
         "guest_os_type": "Linux26_64",
         "vboxmanage": [
-            ["modifyvm", "{{.Name}}", "--memory", "1024"]
+            ["modifyvm", "{{.Name}}", "--memory", "512"]
+        ]
+    }, {
+        "name": "parallels",
+        "type": "parallels-iso",
+        "iso_url": "boot2docker.iso",
+        "iso_checksum": "00be816fbd6b915247d8745b92ebdc77",
+        "iso_checksum_type": "md5",
+        "boot_wait": "15s",
+        "ssh_username": "docker",
+        "ssh_password": "tcuser",
+        "shutdown_command": "sudo poweroff",
+        "guest_os_type": "linux",
+        "guest_os_distribution": "linux-2.6",
+        "prlctl": [
+            ["set", "{{.Name}}", "--memsize", "512"]
         ]
     }],
 
@@ -34,7 +50,7 @@
     "post-processors": [{
         "type": "vagrant",
         "include": ["boot2docker.iso"],
-        "vagrantfile_template": "vagrantfile_virtualbox.tpl",
-        "output": "boot2docker.box"
+        "vagrantfile_template": "vagrantfile.tpl",
+        "output": "boot2docker-{{.Provider}}.box"
     }]
 }

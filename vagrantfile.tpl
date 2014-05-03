@@ -1,20 +1,8 @@
-docker_daemon_running = Vagrant.source_root.join("plugins/provisioners/docker/cap/linux/docker_daemon_running.rb")
-if File.exist?(docker_daemon_running)
-  require docker_daemon_running
+# -*- mode: ruby -*-
+# # vi: set ft=ruby :
 
-  module VagrantPlugins
-    module Docker
-      module Cap
-        module Linux
-          module DockerDaemonRunning
-            def self.docker_daemon_running(machine)
-              machine.communicate.test("test -f /var/run/docker.pid")
-            end
-          end
-        end
-      end
-    end
-  end
+if Vagrant::VERSION < "1.5.4"
+  raise "Need at least Vagrant version 1.5.4, please update"
 end
 
 Vagrant.configure("2") do |config|
@@ -36,4 +24,17 @@ Vagrant.configure("2") do |config|
       "--medium", File.expand_path("../boot2docker.iso", __FILE__),
     ]
   end
+
+  config.vm.provider "parallels" do |p|
+    p.check_guest_tools = false
+    p.customize "pre-boot", [
+      "set", :id,
+      "--device-set", "cdrom0",
+      "--image", File.expand_path("../boot2docker.iso", __FILE__),
+      "--enable", "--connect"
+    ]
+    p.customize "pre-boot", [
+      "set", :id,
+      "--device-bootorder", "cdrom0 hdd0"
+    ]  end
 end
