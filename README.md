@@ -24,10 +24,10 @@ do it in seconds.
 
 To build the box, first install the following prerequisites:
 
-  * [Packer](http://www.packer.io) (at least version 0.5.2)
+  * [Packer](http://www.packer.io) (at least version 0.5.2, 0.6.1 for Parallels)
   * [VirtualBox](http://www.virtualbox.org)
 
-Then, just run `make`. The resulting box will be named "boot2docker.box".
+Then, just run `make`. The resulting box will be named `boot2docker-virtualbox.box` and `boot2docker-parallels.box`.
 The entire process to make the box takes about 20 seconds.
 
 ## License
