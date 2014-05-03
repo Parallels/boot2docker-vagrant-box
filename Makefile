@@ -42,6 +42,7 @@ ptest: test/Vagrantfile boot2docker-parallels.box
 	vagrant suspend
 
 clean:
+	cd test; vagrant destroy -f
 	rm -f boot2docker.iso
 	rm -f boot2docker-virtualbox.box
 	rm -f boot2docker-parallels.box
