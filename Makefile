@@ -33,12 +33,13 @@ ptest: test/Vagrantfile boot2docker-parallels.box
 	cd test; \
 	vagrant destroy -f; \
 	vagrant up --provider parallels; \
+	DOCKER_HOST="tcp://`vagrant ssh-config | sed -n "s/[ ]*HostName[ ]*//gp"`:4243"; \
 	echo "-----> docker version"; \
-	vagrant ssh -c "docker version"; \
+	docker version; \
 	echo "-----> docker images -t"; \
-	vagrant ssh -c "docker images -t"; \
+	docker images -t; \
 	echo "-----> docker ps -a"; \
-	vagrant ssh -c "docker ps -a"; \
+	docker ps -a; \
 	vagrant suspend
 
 clean:
