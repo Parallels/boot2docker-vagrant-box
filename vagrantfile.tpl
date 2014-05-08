@@ -4,7 +4,7 @@
 Vagrant.require_version ">= 1.5.4"
 
 Vagrant.configure("2") do |config|
-  config.ssh.shell = "sh -l"
+  config.ssh.shell = "sh"
   config.ssh.username = "docker"
 
   # Expose the Docker port
