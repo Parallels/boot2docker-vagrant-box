@@ -8,10 +8,10 @@ Vagrant.configure("2") do |config|
   config.ssh.username = "docker"
 
   # Expose the Docker port
-  config.vm.network "forwarded_port", guest: 4243, host: 4243
+  config.vm.network :forwarded_port, guest: 4243, host: 4243
 
   # Attach the b2d ISO so that it can boot
-  config.vm.provider "virtualbox" do |v|
+  config.vm.provider :virtualbox do |v|
     v.check_guest_additions = false
     v.customize "pre-boot", [
       "storageattach", :id,
@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
     ]
   end
 
-  config.vm.provider "parallels" do |p|
+  config.vm.provider :parallels do |p|
     p.check_guest_tools = false
     p.customize "pre-boot", [
       "set", :id,
@@ -34,5 +34,6 @@ Vagrant.configure("2") do |config|
     p.customize "pre-boot", [
       "set", :id,
       "--device-bootorder", "cdrom0 hdd0"
-    ]  end
+    ]
+  end
 end
