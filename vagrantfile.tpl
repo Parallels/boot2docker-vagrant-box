@@ -21,6 +21,8 @@ Vagrant.configure("2") do |config|
       "--type", "dvddrive",
       "--medium", File.expand_path("../boot2docker.iso", __FILE__),
     ]
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
 
   config.vm.provider :parallels do |p|
