@@ -8,15 +8,16 @@ most minimal Docker environment possible.
 ## Usage
 
 If you just want to use the box, then download the latest box from
-the [releases page](https://github.com/YungSang/boot2docker-vagrant-box/releases)
+the [releases page](https://github.com/Parallels/boot2docker-vagrant-box/releases)
 and `vagrant up` as usual! Or, if you don't want to leave your terminal:
 
-    $ vagrant init yungsang/boot2docker
-    $ vagrant up
-    $ export DOCKER_HOST=tcp://localhost:2375
+    $ vagrant plugin install vagrant-parallels
+    $ vagrant init parallels/boot2docker
+    $ vagrant up --provider parallels
+    $ export DOCKER_HOST="tcp://`vagrant ssh-config | sed -n "s/[ ]*HostName[ ]*//gp"`:2375"
     $ docker version
 
-![Vagrant Up Boot2Docker](https://raw.github.com/YungSang/boot2docker-vagrant-box/master/readme_image.gif)
+![Vagrant Up Boot2Docker](https://raw.github.com/Parallels/boot2docker-vagrant-box/master/readme_image.gif)
 
 ## Building the Box
 
@@ -27,9 +28,9 @@ do it in seconds.
 To build the box, first install the following prerequisites:
 
   * [Packer](http://www.packer.io) (at least version 0.5.2, 0.6.1 for Parallels)
-  * [VirtualBox](http://www.virtualbox.org)
+  * [Parallels Desktop](http://www.parallels.com/products/desktop/)
 
-Then, just run `make`. The resulting box will be named `boot2docker-virtualbox.box` and `boot2docker-parallels.box`.
+Then, just run `make parallels`. The resulting box will be named `boot2docker-parallels.box`.
 The entire process to make the box takes about 20 seconds.
 
 ## License
