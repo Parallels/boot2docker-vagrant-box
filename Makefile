@@ -11,7 +11,7 @@ boot2docker-parallels.box: boot2docker.iso template.json vagrantfile.tpl files/*
 	packer build -only parallels template.json
 
 boot2docker.iso:
-	curl -LO https://github.com/boot2docker/boot2docker/releases/download/v0.9.0/boot2docker.iso
+	curl -LO https://github.com/boot2docker/boot2docker/releases/download/v0.9.1/boot2docker.iso
 
 test: test/Vagrantfile boot2docker-virtualbox.box
 	vagrant box remove boot2docker --provider virtualbox
