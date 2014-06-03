@@ -18,9 +18,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder ".", "/vagrant", type: "nfs"
 
   config.vm.provision :docker do |d|
-    d.pull_images "google/busybox"
+    d.pull_images "yungsang/busybox"
     d.run "simple-echo",
-      image: "google/busybox",
+      image: "yungsang/busybox",
       args: "-p 8080:8080",
       cmd: "nc -p 8080 -l -l -e echo hello world!"
   end
