@@ -13,6 +13,8 @@ and `vagrant up` as usual! Or, if you don't want to leave your terminal:
 
     $ vagrant init yungsang/boot2docker
     $ vagrant up
+    $ export DOCKER_HOST=tcp://localhost:2375
+    $ docker version
 
 ![Vagrant Up Boot2Docker](https://raw.github.com/YungSang/boot2docker-vagrant-box/master/readme_image.gif)
 

@@ -7,8 +7,10 @@ Vagrant.configure("2") do |config|
   config.ssh.shell = "sh"
   config.ssh.username = "docker"
 
-  # Expose the Docker port
-  config.vm.network :forwarded_port, guest: 4243, host: 4243
+  # Forward the Docker port
+  config.vm.network :forwarded_port, guest: 2375, host: 2375
+  # Forward the old port for a while, too
+  config.vm.network :forwarded_port, guest: 2375, host: 4243, auto_correct: true
 
   # Disable synced folder by default
   config.vm.synced_folder ".", "/vagrant", disabled: true

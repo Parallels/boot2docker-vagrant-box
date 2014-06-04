@@ -19,6 +19,7 @@ test: test/Vagrantfile boot2docker-virtualbox.box
 	vagrant destroy -f; \
 	vagrant up; \
 	echo "-----> docker version"; \
+	DOCKER_HOST="tcp://localhost:2375"; \
 	docker version; \
 	echo "-----> docker images -t"; \
 	docker images -t; \
@@ -31,7 +32,7 @@ test: test/Vagrantfile boot2docker-virtualbox.box
 ptest: DOCKER_HOST_IP=$(shell cd test; vagrant ssh-config | sed -n "s/[ ]*HostName[ ]*//gp")
 ptest: ptestup
 	@cd test; \
-	DOCKER_HOST="tcp://${DOCKER_HOST_IP}:4243"; \
+	DOCKER_HOST="tcp://${DOCKER_HOST_IP}:2375"; \
 	echo "-----> docker version"; \
 	docker version; \
 	echo "-----> docker images -t"; \
