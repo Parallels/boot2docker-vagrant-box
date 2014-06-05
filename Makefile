@@ -55,4 +55,4 @@ clean:
 	rm -f boot2docker-parallels.box
 	rm -rf output-*/
 
-.PHONY: clean
+.PHONY: test clean
