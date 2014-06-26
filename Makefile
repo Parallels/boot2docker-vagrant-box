@@ -27,6 +27,8 @@ test: test/Vagrantfile boot2docker-virtualbox.box
 	docker ps -a; \
 	echo "-----> nc localhost 8080"; \
 	nc localhost 8080; \
+	echo '-----> docker-attach `docker ps -l -q` ps'; \
+	vagrant ssh -c 'docker-attach `docker ps -l -q` ps'; \
 	vagrant suspend
 
 ptest: DOCKER_HOST_IP=$(shell cd test; vagrant ssh-config | sed -n "s/[ ]*HostName[ ]*//gp")
@@ -41,6 +43,8 @@ ptest: ptestup
 	docker ps -a; \
 	echo "-----> nc ${DOCKER_HOST_IP} 8080"; \
 	nc ${DOCKER_HOST_IP} 8080; \
+	echo '-----> docker-attach `docker ps -l -q` ps'; \
+	vagrant ssh -c 'docker-attach `docker ps -l -q` ps'; \
 	vagrant suspend
 
 ptestup: test/Vagrantfile boot2docker-parallels.box

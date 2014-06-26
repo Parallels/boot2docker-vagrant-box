@@ -1,0 +1,14 @@
+#!/bin/sh
+
+ID="$1"; shift
+
+if [ -z "$ID" ] ; then
+  echo "Usage: $(basename $0) <container_name_or_ID> [command [argments...]]"
+  exit 0
+fi
+
+PID=$(docker inspect --format '{{.State.Pid}}' "$ID")
+
+echo "nsenter --target $PID --mount --uts --ipc --net --pid $@"
+
+sudo sh -c "nsenter --target $PID --mount --uts --ipc --net --pid $@"
