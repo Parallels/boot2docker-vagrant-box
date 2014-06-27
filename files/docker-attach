@@ -1,7 +1,7 @@
 #!/bin/sh
 
 print_usage() {
-  echo "Usage: $(basename $0) <container id/name> [{command:-/bin/sh} [argments...]]"
+  echo "Usage: $(basename $0) <container id/name> [{command:-$SHELL} [argments...]]"
 }
 
 ID="$1"; shift
