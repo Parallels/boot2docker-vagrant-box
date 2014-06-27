@@ -1,14 +1,18 @@
 #!/bin/sh
 
-ID="$1"; shift
+print_usage() {
+  echo "Usage: $(basename $0) <container id/name> [{command:-/bin/sh} [argments...]]"
+}
 
+ID="$1"; shift
 if [ -z "$ID" ] ; then
-  echo "Usage: $(basename $0) <container_name_or_ID> [command [argments...]]"
-  exit 0
+  print_usage && exit
 fi
 
-PID=$(docker inspect --format '{{.State.Pid}}' "$ID")
+PID=$(docker inspect --format '{{.State.Pid}}' "$ID" 2> /dev/null)
+if [ -z "$PID" ] ; then
+  print_usage && exit
+fi
 
 echo "nsenter --target $PID --mount --uts --ipc --net --pid $@"
-
 sudo sh -c "nsenter --target $PID --mount --uts --ipc --net --pid $@"
