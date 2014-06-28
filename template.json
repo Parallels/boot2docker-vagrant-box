@@ -46,8 +46,8 @@
             "sudo cp /tmp/bootlocal.sh /var/lib/boot2docker/bootlocal.sh",
             "sudo chmod +x /var/lib/boot2docker/bootlocal.sh",
             "sudo mkdir -p /var/lib/boot2docker/bin",
-            "sudo cp /tmp/docker-attach /var/lib/boot2docker/bin/docker-attach",
-            "sudo chmod +x /var/lib/boot2docker/bin/docker-attach"
+            "sudo cp /tmp/docker-enter /var/lib/boot2docker/bin/docker-enter",
+            "sudo chmod +x /var/lib/boot2docker/bin/docker-enter"
         ]
     }],
 

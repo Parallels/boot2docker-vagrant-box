@@ -14,5 +14,8 @@ if [ -z "$PID" ] ; then
   print_usage && exit
 fi
 
-echo "nsenter --target $PID --mount --uts --ipc --net --pid $@"
-sudo sh -c "nsenter --target $PID --mount --uts --ipc --net --pid $@"
+echo "nsenter --target $PID --mount --uts --ipc --net --pid -- $*"
+sudo sh -c "nsenter --target $PID --mount --uts --ipc --net --pid -- $*"
+# or
+# echo echo nsenter --target $PID --mount --uts --ipc --net --pid -- "$@"
+# nsenter --target $PID --mount --uts --ipc --net --pid -- "$@"
