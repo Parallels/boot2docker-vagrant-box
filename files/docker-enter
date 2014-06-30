@@ -6,12 +6,14 @@ print_usage() {
 
 ID="$1"; shift
 if [ -z "$ID" ] ; then
-  print_usage && exit
+  print_usage >&2
+  exit 1
 fi
 
 PID=$(docker inspect --format '{{.State.Pid}}' "$ID" 2> /dev/null)
 if [ -z "$PID" ] ; then
-  print_usage && exit
+  print_usage >&2
+  exit 1
 fi
 
 echo "nsenter --target $PID --mount --uts --ipc --net --pid -- $*"
