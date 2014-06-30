@@ -4,14 +4,19 @@ virtualbox: boot2docker-virtualbox.box
 
 parallels: boot2docker-parallels.box
 
-boot2docker-virtualbox.box: boot2docker.iso template.json vagrantfile.tpl files/*
+boot2docker-virtualbox.box: boot2docker.iso template.json vagrantfile.tpl \
+	files/bootlocal.sh files/bootsync.sh files/docker-enter
 	packer build -only virtualbox template.json
 
-boot2docker-parallels.box: boot2docker.iso template.json vagrantfile.tpl files/*
+boot2docker-parallels.box: boot2docker.iso template.json vagrantfile.tpl \
+	files/bootlocal.sh files/bootsync.sh files/docker-enter
 	packer build -only parallels template.json
 
 #boot2docker.iso:
 #	curl -LO https://github.com/boot2docker/boot2docker/releases/download/v0.9.1/boot2docker.iso
+
+files/docker-enter:
+	curl -L https://raw.githubusercontent.com/YungSang/docker-attach/master/docker-nsenter -o files/docker-enter
 
 test: test/Vagrantfile boot2docker-virtualbox.box
 	@vagrant box add -f boot2docker boot2docker-virtualbox.box
@@ -56,6 +61,7 @@ ptestup: test/Vagrantfile boot2docker-parallels.box
 clean:
 	cd test; vagrant destroy -f
 	rm -f boot2docker.iso
+	rm -f files/docker-enter
 	rm -f boot2docker-virtualbox.box
 	rm -f boot2docker-parallels.box
 	rm -rf output-*/
