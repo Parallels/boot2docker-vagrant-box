@@ -41,6 +41,7 @@
             "mkfs.ext4 -F -L boot2docker-data /dev/sda",
             "sudo /usr/local/etc/init.d/docker stop",
             "sudo /etc/rc.d/automount",
+            "sudo cp /tmp/oem-release /var/lib/boot2docker/oem-release",
             "sudo cp /tmp/bootsync.sh /var/lib/boot2docker/bootsync.sh",
             "sudo chmod +x /var/lib/boot2docker/bootsync.sh",
             "sudo cp /tmp/bootlocal.sh /var/lib/boot2docker/bootlocal.sh",

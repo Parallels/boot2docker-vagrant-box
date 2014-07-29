@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Place oem-release in /etc
+ln -s /var/lib/boot2docker/oem-release /etc/oem-release
+
 mkdir -p /home/docker/.ssh
 chmod 0700 /home/docker/.ssh
 
