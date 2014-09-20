@@ -16,7 +16,6 @@ Vagrant.configure("2") do |config|
   # Attach the b2d ISO so that it can boot
   config.vm.provider :virtualbox do |v|
     v.check_guest_additions = false
-    v.functional_vboxsf = false
     v.customize "pre-boot", [
       "storageattach", :id,
       "--storagectl", "IDE Controller",

@@ -20,3 +20,6 @@ fi
 
 # Place docker in /usr/bin for guest capability check
 ln -s /usr/local/bin/docker /usr/bin/docker
+
+# Load the vboxsf module
+modprobe vboxsf
