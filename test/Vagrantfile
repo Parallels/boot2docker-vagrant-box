@@ -12,12 +12,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider :virtualbox do |vb, override|
     override.vm.network "private_network", ip: "192.168.33.10"
+    override.vm.synced_folder ".", "/vagrant"
   end
   config.vm.provider :parallels do |prl, override|
     override.vm.network "private_network", ip: "192.168.34.10"
+    override.vm.synced_folder ".", "/vagrant", type: "nfs"
   end
-
-  config.vm.synced_folder ".", "/vagrant", type: "nfs"
 
   config.vm.provision :docker do |d|
     d.pull_images "yungsang/busybox"
