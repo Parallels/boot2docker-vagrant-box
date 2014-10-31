@@ -13,7 +13,7 @@ boot2docker-parallels.box: boot2docker.iso template.json vagrantfile.tpl \
 	packer build -only parallels template.json
 
 #boot2docker.iso:
-#	curl -LO https://github.com/boot2docker/boot2docker/releases/download/v0.9.1/boot2docker.iso
+#	curl -LO https://github.com/boot2docker/boot2docker/releases/download/v1.3.1/boot2docker.iso
 
 files/docker-enter:
 	curl -L https://raw.githubusercontent.com/YungSang/docker-attach/master/docker-nsenter -o files/docker-enter
@@ -38,6 +38,8 @@ test: test/Vagrantfile boot2docker-virtualbox.box
 	nc localhost 8080; \
 	echo '-----> docker-enter `docker ps -l -q` ls -l'; \
 	vagrant ssh -c 'docker-enter `docker ps -l -q` ls -l'; \
+	echo '-----> docker exec `docker ps -l -q` ls -l'; \
+	docker exec `docker ps -l -q` ls -l; \
 	vagrant suspend
 
 ptest: DOCKER_HOST_IP=$(shell cd test; vagrant ssh-config | sed -n "s/[ ]*HostName[ ]*//gp")
@@ -58,6 +60,8 @@ ptest: ptestup
 	nc ${DOCKER_HOST_IP} 8080; \
 	echo '-----> docker-enter `docker ps -l -q` ls -l'; \
 	vagrant ssh -c 'docker-enter `docker ps -l -q` ls -l'; \
+	echo '-----> docker exec `docker ps -l -q` ls -l'; \
+	docker exec `docker ps -l -q` ls -l; \
 	vagrant suspend
 
 ptestup: test/Vagrantfile boot2docker-parallels.box
