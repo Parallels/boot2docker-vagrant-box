@@ -34,7 +34,8 @@
     "provisioners": [{
         "type": "shell",
         "inline": [
-            "mkfs.ext4 -F -L boot2docker-data /dev/sda",
+            "(echo n; echo p; echo 1; echo; echo; echo w; echo p; echo q;) | sudo fdisk /dev/sda",
+            "mkfs.ext4 -F -L boot2docker-data /dev/sda1",
             "sudo /usr/local/etc/init.d/docker stop",
             "sudo /etc/rc.d/automount",
 
