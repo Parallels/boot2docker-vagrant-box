@@ -21,6 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :docker do |d|
     d.pull_images "yungsang/busybox"
+    d.build_image "/vagrant/"
     d.run "simple-echo",
       image: "yungsang/busybox",
       args: "-p 8080:8080",
