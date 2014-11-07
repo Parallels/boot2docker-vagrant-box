@@ -34,8 +34,13 @@
     "provisioners": [{
         "type": "shell",
         "inline": [
-            "(echo n; echo p; echo 1; echo; echo; echo w; echo p; echo q;) | sudo fdisk /dev/sda",
-            "mkfs.ext4 -F -L boot2docker-data /dev/sda1",
+            "(echo n; echo p; echo 2; echo ; echo +1000M ; echo w) | sudo fdisk /dev/sda",
+            "(echo t; echo 82) | sudo fdisk /dev/sda",
+            "sudo mkswap /dev/sda2",
+            "(echo n; echo p; echo 1; echo ; echo ; echo w;) | sudo fdisk /dev/sda",
+            "sudo mkfs.ext4 -F -L boot2docker-data /dev/sda1",
+            "sudo swapon /dev/sda2",
+
             "sudo /usr/local/etc/init.d/docker stop",
             "sudo /etc/rc.d/automount",
 
