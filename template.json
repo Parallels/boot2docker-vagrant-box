@@ -11,6 +11,7 @@
         "shutdown_command": "sudo poweroff",
         "guest_additions_mode": "disable",
         "guest_os_type": "Linux26_64",
+        "disk_size": 40960,
         "hard_drive_interface": "sata",
         "vboxmanage": [
             ["modifyvm", "{{.Name}}", "--memory", "512"],
