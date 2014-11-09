@@ -12,7 +12,15 @@
         "guest_additions_mode": "disable",
         "guest_os_type": "Linux26_64",
         "vboxmanage": [
-            ["modifyvm", "{{.Name}}", "--memory", "512"]
+            ["modifyvm", "{{.Name}}", "--memory", "512"],
+            ["modifyvm", "{{.Name}}", "--nictype1", "virtio"],
+            ["modifyvm", "{{.Name}}", "--nictype2", "virtio"],
+            ["modifyvm", "{{.Name}}", "--nictype3", "virtio"],
+            ["modifyvm", "{{.Name}}", "--nictype4", "virtio"],
+            ["modifyvm", "{{.Name}}", "--nictype5", "virtio"],
+            ["modifyvm", "{{.Name}}", "--nictype6", "virtio"],
+            ["modifyvm", "{{.Name}}", "--nictype7", "virtio"],
+            ["modifyvm", "{{.Name}}", "--nictype8", "virtio"]
         ]
     }, {
         "name": "parallels",

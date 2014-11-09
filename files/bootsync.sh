@@ -22,4 +22,5 @@ fi
 ln -s /usr/local/bin/docker /usr/bin/docker
 
 # Load the vboxsf module
+modprobe vboxguest
 modprobe vboxsf
