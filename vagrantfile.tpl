@@ -6,6 +6,7 @@ Vagrant.require_version ">= 1.6.3"
 Vagrant.configure("2") do |config|
   config.ssh.shell = "sh"
   config.ssh.username = "docker"
+  config.ssh.insert_key = false
 
   # Forward the Docker port
   config.vm.network :forwarded_port, guest: 2375, host: 2375
