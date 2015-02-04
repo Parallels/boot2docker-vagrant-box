@@ -5,6 +5,10 @@ This repository contains the scripts necessary to create a Vagrant-compatible
 with Docker, this box lets you keep your Vagrant workflow and work in the
 most minimal Docker environment possible.
 
+## Docker installation
+Docker client need to be installed on your Mac.
+You can do it via [Brew](http://brew.sh/) `brew install docker` or use official [boot2docker](https://docs.docker.com/installation/mac/) installer.
+
 ## Usage
 
 If you just want to use the box, then download the latest box from
