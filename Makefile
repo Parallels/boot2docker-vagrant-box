@@ -1,17 +1,49 @@
-BOOT2DOCKER_VERSION = 1.7.0
+BOOT2DOCKER_VERSION := 1.7.0
 
-all: clean build test
+B2D_ISO_FILE := boot2docker.iso
+B2D_ISO_URL := https://github.com/boot2docker/boot2docker/releases/download/v$(BOOT2DOCKER_VERSION)/boot2docker.iso
+B2D_ISO_CHECKSUM := e52d0ec9b0433520232457f141c19d70
 
-build: boot2docker.iso
-	packer build -parallel=false -only=virtualbox-iso template.json
+PRL_B2D_ISO_FILE := boot2docker-prl.iso
+PRL_B2D_ISO_URL := https://github.com/Parallels/boot2docker/releases/download/v1.7.0-prl-tools/boot2docker.iso
+PRL_B2D_ISO_CHECKSUM := 6b6e5ddb06ade5adcd31194674e49ce7
 
-boot2docker.iso:
-	curl -L -o boot2docker.iso https://github.com/boot2docker/boot2docker/releases/download/v$(BOOT2DOCKER_VERSION)/boot2docker.iso
+all: parallels virtualbox
 
-test:
+virtualbox:	clean-virtualbox build-virtualbox test-virtualbox
+
+parallels: clean-parallels build-parallels test-parallels
+
+$(B2D_ISO_FILE):
+	curl -L -o ${B2D_ISO_FILE} ${B2D_ISO_URL}
+
+$(PRL_B2D_ISO_FILE):
+	curl -L -o ${PRL_B2D_ISO_FILE} ${PRL_B2D_ISO_URL}
+
+build-virtualbox: $(B2D_ISO_FILE)
+	packer build -parallel=false -only=virtualbox-iso \
+		-var 'B2D_ISO_FILE=${B2D_ISO_FILE}' \
+		-var 'B2D_ISO_CHECKSUM=${B2D_ISO_CHECKSUM}' \
+		template.json
+
+build-parallels: $(PRL_B2D_ISO_FILE)
+	packer build -parallel=false -only=parallels-iso \
+		-var 'B2D_ISO_FILE=${PRL_B2D_ISO_FILE}' \
+		-var 'B2D_ISO_CHECKSUM=${PRL_B2D_ISO_CHECKSUM}' \
+		template.json
+
+clean-virtualbox:
+	rm -rf *_virtualbox.box $(B2D_ISO_FILE)
+
+clean-parallels:
+	rm -rf *_parallels.box $(PRL_B2D_ISO_FILE)
+
+test-virtualbox:
 	@cd tests/virtualbox; bats --tap *.bats
 
-clean:
-	rm -rf *.iso *.box
+test-parallels:
+	@cd tests/parallels; bats --tap *.bats
 
-.PHONY: clean build test all
+.PHONY: all virtualbox parallels \
+	clean-virtualbox build-virtualbox test-virtualbox \
+	clean-parallels build-parallels test-parallels

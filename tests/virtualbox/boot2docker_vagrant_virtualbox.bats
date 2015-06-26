@@ -8,7 +8,7 @@
 	run vagrant destroy -f
 	run vagrant box remove boot2docker-virtualbox-test
 	cp vagrantfile.orig Vagrantfile
-	vagrant up
+	vagrant up --provider=virtualbox
 	[ $( vagrant status | grep 'running' | wc -l ) -ge 1 ]
 }
 
