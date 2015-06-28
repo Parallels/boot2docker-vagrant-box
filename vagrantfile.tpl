@@ -1,46 +1,25 @@
-# -*- mode: ruby -*-
-# # vi: set ft=ruby :
-
-Vagrant.require_version ">= 1.6.3"
-
 Vagrant.configure("2") do |config|
   config.ssh.shell = "sh"
   config.ssh.username = "docker"
+
+  # Used on Vagrant >= 1.7.x to disable the ssh key regeneration
   config.ssh.insert_key = false
 
-  # Forward the Docker port
-  config.vm.network :forwarded_port, guest: 2375, host: 2375
-
-  # Disable synced folder by default
-  config.vm.synced_folder ".", "/vagrant", disabled: true
-
-  # Attach the b2d ISO so that it can boot
-  config.vm.provider :virtualbox do |v|
-    v.check_guest_additions = false
-    v.customize "pre-boot", [
-      "storageattach", :id,
-      "--storagectl", "IDE Controller",
-      "--port", "0",
-      "--device", "1",
-      "--type", "dvddrive",
-      "--medium", File.expand_path("../boot2docker.iso", __FILE__),
-    ]
-    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  # Use NFS folder sync by default unless we are on Windows
+  if ENV['B2D_NFS_SYNC']
+    config.vm.synced_folder ".", "/vagrant", type: "nfs", mount_options: ["nolock", "vers=3", "udp"], id: "nfs-sync"
   end
 
-  config.vm.provider :parallels do |p|
-    p.check_guest_tools = false
-    p.functional_psf = false
-    p.customize "pre-boot", [
-      "set", :id,
-      "--device-set", "cdrom0",
-      "--image", File.expand_path("../boot2docker.iso", __FILE__),
-      "--enable", "--connect"
-    ]
-    p.customize "pre-boot", [
-      "set", :id,
-      "--device-bootorder", "cdrom0 hdd0"
-    ]
+  # Expose the Docker ports (non secured AND secured)
+  config.vm.network "forwarded_port", guest: 2375, host: 2375, host_ip: "127.0.0.1", auto_correct: true, id: "docker"
+  config.vm.network "forwarded_port", guest: 2376, host: 2376, host_ip: "127.0.0.1", auto_correct: true, id: "docker-ssl"
+
+  # Create a private network for accessing VM without NAT
+  config.vm.network "private_network", ip: "192.168.10.10", id: "default-network", nic_type: "virtio"
+
+  # Add bootlocal support
+  if File.file?('./bootlocal.sh')
+    config.vm.provision "shell", path: "bootlocal.sh", run: "always"
   end
+
 end

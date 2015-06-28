@@ -1,46 +1,75 @@
 # boot2docker Vagrant Box
 
 This repository contains the scripts necessary to create a Vagrant-compatible
-[boot2docker](https://github.com/boot2docker/boot2docker) box. If you work solely
-with Docker, this box lets you keep your Vagrant workflow and work in the
-most minimal Docker environment possible.
+[boot2docker](https://github.com/boot2docker/boot2docker) box and is compatible with Docker v1.6. 
 
-## Docker installation
-Docker client need to be installed on your Mac.
-You can do it via [Brew](http://brew.sh/) `brew install docker` or use official [boot2docker](https://docs.docker.com/installation/mac/) installer.
+If you work solely with Docker, this box lets you keep your Vagrant workflow and work in the most minimal Docker environment possible.
 
 ## Usage
 
-If you just want to use the box, then download the latest box from
-the [releases page](https://github.com/Parallels/boot2docker-vagrant-box/releases)
-and `vagrant up` as usual! Or, if you don't want to leave your terminal:
+The box is available on [Hashicrop's Atlas](https://atlas.hashicorp.com/dduportal/boxes/boot2docker), making it very easy to use it:
 
-    $ vagrant plugin install vagrant-parallels
-    $ vagrant init parallels/boot2docker
-    $ vagrant up --provider parallels
-    $ export DOCKER_HOST="tcp://`vagrant ssh-config | sed -n "s/[ ]*HostName[ ]*//gp"`:2375"
-    $ docker version
+    $ vagrant init dduportal/boot2docker
+    $ vagrant up
 
-![Vagrant Up Boot2Docker](https://raw.github.com/Parallels/boot2docker-vagrant-box/master/readme_image.gif)
+If you want the actual box source file, you can download it from the [tags page](https://github.com/dduportal/boot2docker-vagrant-box/tags).
+
+On OS X, to use the docker client, follow the directions here: http://docs.docker.io/installation/mac/#docker-os-x-client (you'll need to export `DOCKER_HOST`). You should then be able to to run `docker version` from the host. [Homebrew](http://brew.sh) can also a good installation medium with ```brew update && brew install docker```
+
+
+## Tips & tricks
+
+* Vagrant synced folder has been tested with :
+  * vbox shared folder : This is default sharing system
+  * [rsync](https://docs.vagrantup.com/v2/synced-folders/rsync.html) : add this line to your Vagrantfile (it will overwrite the default vboxsf sync behaviour) :
+
+    ```ruby
+config.vm.synced_folder ".", "/vagrant", type: "rsync"
+    ```
+  * [NFS](https://docs.vagrantup.com/v2/synced-folders/nfs.html) : For now, use environment variable to enable NFS (Mac OS and Linux tested). It will ask for your admin password.
+
+    ```bash
+    $ export B2D_NFS_SYNC=1
+    $ vagrant up
+    ```
+
+* If you want to tune contents (custom profile, install tools inside the VM) that do not fit into the "vagrant provisionning" lifecycle combinded with the un-persistence of boot2docker, the "bootlocal" system has been extended :
+  * The [boot2docker FaQ](https://github.com/boot2docker/boot2docker/blob/master/doc/FAQ.md) says that you can provide a custom script, named bootlocal.sh to execute things at the end of the boot.
+  * We customize in order to run that script from the /vagrant share when mounted, at the end of the boot.
+  * So : just place a "bootlocal.sh" script alongside your Vagrantfile to customize what's inside your b2d VM.
+
+
+* If you use the VM as a remote Docker daemon in a private networked docker server you need to add in your bootlocal.sh :
+(Thanks to @Freyskeyd)
+
+```
+# Regenerate certs for the newly created Iprivate network IP
+sudo /etc/init.d/docker restart
+# Copy tls certs to the vagrant share to allow host to use it
+sudo cp -r /var/lib/boot2docker/tls /vagrant/
+```
+
+  Next, you need to configure your Docker environment :
+  * Export cert path: ```export DOCKER_CERT_PATH=<Absolute path to your vagrant share>/tls```
+  * Export Docker host path : ```export DOCKER_HOST=tcp://192.168.10.10:2376``` (You can also use localhost if the NAT is OK)
 
 ## Building the Box
 
 If you want to recreate the box, rather than using the binary, then
-you can use the Packer template and sources within this repository to
-do it in seconds.
+you can use the scripts and Packer template within this repository to
+do so in seconds.
 
 To build the box, first install the following prerequisites:
 
-  * [Packer](http://www.packer.io) (at least version 0.5.2, 0.6.1 for Parallels)
-  * [Parallels Desktop](http://www.parallels.com/products/desktop/)
+  * [Make as workflow engine](http://www.gnu.org/software/make/)
+  * [Packer as vagrant basebox builder](http://www.packer.io) (at least version 0.7.5)
+  * [VirtualBox as main virtualization system](http://www.virtualbox.org) (at least version 4.3.28) [VMware and Parallels not implemented yet]
+  * [curl for downloading things](http://curl.haxx.se)
+  * [bats for testing](https://github.com/sstephenson/bats)
 
-Then, just run `make parallels`. The resulting box will be named `boot2docker-parallels.box`.
-The entire process to make the box takes about 20 seconds.
+Then follow the steps:
 
-## License
-
-[![CC0](http://i.creativecommons.org/p/zero/1.0/88x31.png)](http://creativecommons.org/publicdomain/zero/1.0/)  
-To the extent possible under law, the person who associated CC0 with this work has waived all copyright and related or neighboring rights to this work.
-
-- [boot2docker](http://boot2docker.io/) is under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
-- [Vagrant](http://www.vagrantup.com/): Copyright (c) 2010-2014 Mitchell Hashimoto, under the [MIT License](https://github.com/mitchellh/vagrant/blob/master/LICENSE)
+```
+$ make
+...
+```
