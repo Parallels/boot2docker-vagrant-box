@@ -39,12 +39,9 @@ DOCKER_TARGET_VERSION=1.7.0
 	vagrant reload
 }
 
-@test "Share folder is mounted" {
-	vagrant ssh -c "ls -l /vagrant/Vagrantfile"
-}
-
 @test "Default synced folder is shared via prl_fs" {
-	[ $(vagrant ssh -c 'mount | grep /vagrant | grep prl_fs | wc -l' -- -n -T) -ge 1 ]
+	mount_point=$(vagrant ssh -c 'mount' | grep prl_fs | awk '{ print $3 }')
+	[ $(vagrant ssh -c "ls -l ${mount_point}/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
 }
 
 @test "Rsync is installed in the VM" {
@@ -58,7 +55,8 @@ DOCKER_TARGET_VERSION=1.7.0
 @test "Default synced folder is shared via NFS if B2D_NFS_SYNC is set" {
 	export B2D_NFS_SYNC=1
 	vagrant reload
-	[ $(vagrant ssh -c 'mount | grep /vagrant | grep nfs | wc -l' -- -n -T) -ge 1 ]
+	mount_point=$(vagrant ssh -c 'mount' | grep nfs | awk '{ print $3 }')
+	[ $(vagrant ssh -c "ls -l $mount_point/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
 	unset B2D_NFS_SYNC
 }
 
