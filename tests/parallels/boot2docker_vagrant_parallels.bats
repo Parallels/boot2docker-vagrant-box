@@ -74,4 +74,5 @@ DOCKER_TARGET_VERSION=1.7.0
 @test "destroy and cleanup" {
 	vagrant destroy -f
 	vagrant box remove boot2docker-parallels-test
+	rm -rf ./tls/
 }
