@@ -8,7 +8,7 @@
 	run vagrant destroy -f
 	run vagrant box remove boot2docker-virtualbox-test
 	cp vagrantfile.orig Vagrantfile
-	vagrant up
+	vagrant up --provider=virtualbox
 	[ $( vagrant status | grep 'running' | wc -l ) -ge 1 ]
 }
 
@@ -43,10 +43,6 @@ DOCKER_TARGET_VERSION=1.7.0
 	vagrant ssh -c 'echo OK'
 }
 
-@test "We can share folder thru vboxsf" {
-	vagrant ssh -c "ls -l /vagrant/Vagrantfile"
-}
-
 @test "Rsync is installed inside the b2d" {
 	vagrant ssh -c "which rsync"
 }
@@ -55,14 +51,16 @@ DOCKER_TARGET_VERSION=1.7.0
 	[ $(vagrant ssh -c 'ps aux | grep rpc.statd | wc -l' -- -n -T) -ge 1 ]
 }
 
-@test "We shave a default synced folder thru vboxsf instead of NFS if NO_B2D_NFS_SYNC is set" {
-	[ $(vagrant ssh -c 'df -h /vagrant | grep vagrant | grep none | wc -l' -- -n -T) -ge 1 ]
+@test "We shave a default synced folder thru vboxsf instead of NFS" {
+	mount_point=$(vagrant ssh -c 'mount' | grep vboxsf | awk '{ print $3 }')
+	[ $(vagrant ssh -c "ls -l ${mount_point}/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
 }
 
 @test "We shave a NFS synced folder if B2D_NFS_SYNC is set (admin password required, will fail on Windows)" {
 	export B2D_NFS_SYNC=1
 	vagrant reload
-	[ $(vagrant ssh -c 'df -h /vagrant | grep vagrant | grep 192.168.10.1 | wc -l' -- -n -T) -ge 1 ]
+	mount_point=$(vagrant ssh -c 'mount' | grep nfs | awk '{ print $3 }')
+	[ $(vagrant ssh -c "ls -l $mount_point/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
 	unset B2D_NFS_SYNC
 }
 
