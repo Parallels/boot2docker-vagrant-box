@@ -73,7 +73,7 @@ do so in seconds.
 To build the box, first install the following prerequisites:
 
   * [Packer](http://www.packer.io) (at least version 0.7.5)
-  * [Parallels Desktop for Mac](http://www.parallels.com/products/desktop/) (version 9 or higher)
+  * [Parallels Desktop for Mac](http://www.parallels.com/products/desktop/) (version 10.1.2 or higher)
   * [Parallels Virtualization SDK for Mac](http://www.parallels.com/download/pvsdk/)
   * [Bats](https://github.com/sstephenson/bats) for integration tests
 

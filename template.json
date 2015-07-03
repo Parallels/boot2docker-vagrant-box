@@ -46,7 +46,8 @@
         "shutdown_command": "sudo poweroff",
         "parallels_tools_mode": "disable",
         "prlctl": [
-            ["set", "{{.Name}}", "--memsize", "1536"]
+            ["set", "{{.Name}}", "--memsize", "1536"],
+            ["set", "{{.Name}}", "--time-sync", "off"]
         ]
     }],
     "provisioners": [
