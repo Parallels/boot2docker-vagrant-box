@@ -82,3 +82,8 @@ Then run this command to build the box for Parallels provider:
 ```
 make parallels
 ```
+
+## Authors
+
+- Author:: Mikhail Zholobov (<legal90@gmail.com>)
+- Author:: Damien Duportal (<damien.duportal@gmail.com>)
