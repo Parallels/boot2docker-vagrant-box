@@ -24,7 +24,8 @@ vagrant up
 Then you need to configure your Docker environment:
 
 ```bash
-export DOCKER_CERT_PATH=`pwd`/tls
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_CERT_PATH="`pwd`/tls"
 export DOCKER_HOST="tcp://`vagrant ssh-config | sed -n "s/[ ]*HostName[ ]*//gp"`:2376"
 ```
 
@@ -58,10 +59,10 @@ to get more details.
 
 * This box is pre-configured to sync TLS certificates with your Mac after
 every `vagrant up`. Certificates appears at `./tls/` directory. If you want to
-regenerate them, just run:
+sync them manually, just run:
 
 ```bash
-vagrant ssh -c "sudo /etc/init.d/docker restart && sudo cp -r /var/lib/boot2docker/tls `pwd`/"
+vagrant ssh -c "sudo cp -r /var/lib/boot2docker/tls `pwd`/"
 ```
 
 ## Building the Box
