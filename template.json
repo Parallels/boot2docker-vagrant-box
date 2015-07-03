@@ -40,16 +40,19 @@
         "iso_checksum_type": "md5",
         "iso_checksum": "{{user `B2D_ISO_CHECKSUM`}}",
         "boot_wait": "5s",
-        "guest_os_type": "linux",
+        "guest_os_type": "linux-2.6",
         "ssh_username": "docker",
         "ssh_password": "tcuser",
         "shutdown_command": "sudo poweroff",
-        "parallels_tools_mode": "disable"
+        "parallels_tools_mode": "disable",
+        "prlctl": [
+            ["set", "{{.Name}}", "--memsize", "1536"]
+        ]
     }],
     "provisioners": [
         {
             "type": "file",
-            "source": "boot2docker.iso",
+            "source": "{{user `B2D_ISO_FILE`}}",
             "destination": "/tmp/boot2docker-orig.iso"
         },
         {
