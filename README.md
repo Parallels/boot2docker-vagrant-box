@@ -57,14 +57,6 @@ It will be run in the VM automatically each time after `vagrant up`.
 Refer to [boot2docker FAQ](https://github.com/boot2docker/boot2docker/blob/master/doc/FAQ.md)
 to get more details.
 
-* This box is pre-configured to sync TLS certificates with your Mac after
-every `vagrant up`. Certificates appears at `./tls/` directory. If you want to
-sync them manually, just run:
-
-```bash
-vagrant ssh -c "sudo cp -r /var/lib/boot2docker/tls `pwd`/"
-```
-
 ## Building the Box
 
 If you want to recreate the box, rather than using the binary, then

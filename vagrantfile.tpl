@@ -26,7 +26,4 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", path: "bootlocal.sh", run: "always"
   end
 
-  # Copy TLS certs
-  config.vm.provision "shell", run: "always",
-    inline: "cp -r /var/lib/boot2docker/tls #{Dir.pwd}/"
 end
