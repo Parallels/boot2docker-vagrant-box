@@ -21,12 +21,32 @@ vagrant init parallels/boot2docker
 vagrant up
 ```
 
-Then you need to configure your Docker environment:
+Then you need to prepare your environment for Docker client
+
+### If TLS is enabled (by default):
 
 ```bash
+# Copy TLS certificates from the VM to `./tls/` directory on your Mac host:
+vagrant ssh -c "sudo cp -r /var/lib/boot2docker/tls `pwd`/"
+
 export DOCKER_TLS_VERIFY="1"
 export DOCKER_CERT_PATH="`pwd`/tls"
 export DOCKER_HOST="tcp://`vagrant ssh-config | sed -n "s/[ ]*HostName[ ]*//gp"`:2376"
+```
+
+### If TLS is disabled:
+Use these commands to disable TLS for Docker daemon (you should do it
+only once, after the initial `vagrant up`):
+
+```
+vagrant ssh -c "sudo sh -c 'echo \"export DOCKER_TLS=no\" > /var/lib/boot2docker/profile'"
+vagrant reload
+```
+
+Now you just need to set `DOCKER_HOST` variable:
+```
+unset DOCKER_TLS_VERIFY
+export DOCKER_HOST="tcp://`vagrant ssh-config | sed -n "s/[ ]*HostName[ ]*//gp"`:2375"
 ```
 
 That's it! Now your VM can be used as Docker host, check it:
