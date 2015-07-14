@@ -7,9 +7,9 @@ Vagrant.configure("2") do |config|
 
   # Use NFS folder sync if env variable B2D_NFS_SYNC is set
   if ENV['B2D_NFS_SYNC']
-    config.vm.synced_folder ".", Dir.pwd, type: "nfs", mount_options: ["nolock", "vers=3", "udp"], id: "nfs-sync"
+    config.vm.synced_folder "/Users", "/Users", type: "nfs", mount_options: ["nolock", "vers=3", "udp"], id: "nfs-sync"
   else
-    config.vm.synced_folder ".", Dir.pwd
+    config.vm.synced_folder "/Users", "/Users"
   end
 
   config.vm.provider "virtualbox" do |v, override|
