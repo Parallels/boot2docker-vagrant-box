@@ -56,8 +56,24 @@ docker version
 ...
 ```
 
-If you want the actual box file, you can download it from the
-[releases page](https://github.com/Parallels/boot2docker-vagrant-box/releases).
+## Shared Folders
+`/Users` path on you Mac is shared with boot2docker VM by default. It means
+that you can mount any directory placed in `/Users` on your Mac into the
+container, for example:
+
+```bash
+docker run -v /Users/bob/myapp/src:/src [...]
+```
+
+If you want to mount any directory outside of `/Users`, then you should set it
+(or its parent dir) as a synced folder in your Vagrantfile at first:
+
+```ruby
+config.vm.synced_folder "/tmp/dir_to_share", "/tmp/dir_to_share"
+```
+
+Refer to ["Synced Folders - Basic Usage"](https://docs.vagrantup.com/v2/synced-folders/basic_usage.html)
+to get more details about synced folders in Vagrant.
 
 ## Tips & tricks
 
