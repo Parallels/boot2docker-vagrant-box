@@ -39,9 +39,14 @@ DOCKER_TARGET_VERSION=1.7.1
 	vagrant reload
 }
 
-@test "Default synced folder is shared via prl_fs" {
-	mount_point=$(vagrant ssh -c 'mount' | grep prl_fs | awk '{ print $3 }')
-	[ $(vagrant ssh -c "ls -l ${mount_point}/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
+@test "'/Users' and '.' synced folders are shared via prl_fs" {
+	run vagrant ssh -c 'mount | grep prl_fs'
+  [ "$status" -eq 0  ]
+  [ $(expr "${lines[0]}" : ".*on /Users") -ne 0 ]
+  [ $(expr "${lines[1]}" : ".*on /vagrant") -ne 0 ]
+
+  run vagrant ssh -c "ls -l /vagrant/Vagrantfile"
+  [ "$status" -eq 0  ]
 }
 
 @test "Rsync is installed in the VM" {
@@ -52,12 +57,16 @@ DOCKER_TARGET_VERSION=1.7.1
 	[ $(vagrant ssh -c 'ps aux | grep rpc.statd | wc -l' -- -n -T) -ge 1 ]
 }
 
-@test "Default synced folder is shared via NFS if B2D_NFS_SYNC is set" {
+@test "Reload VM with enabled B2D_NFS_SYNC" {
 	export B2D_NFS_SYNC=1
-	vagrant reload
-	mount_point=$(vagrant ssh -c 'mount' | grep nfs | awk '{ print $3 }')
-	[ $(vagrant ssh -c "ls -l $mount_point/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
-	unset B2D_NFS_SYNC
+	run vagrant reload
+}
+
+@test "'/Users' synced folder is shared via NFS" {
+	run vagrant ssh -c 'mount | grep nfs'
+  [ "$status" -eq 0  ]
+  [ $(expr "${lines[0]}" : ".*on /Users") -ne 0 ]
+  unset B2D_NFS_SYNC
 }
 
 @test "Default synced folder can be shared via rsync" {
@@ -74,5 +83,4 @@ DOCKER_TARGET_VERSION=1.7.1
 @test "destroy and cleanup" {
 	vagrant destroy -f
 	vagrant box remove boot2docker-parallels-test
-	rm -rf ./tls/
 }
