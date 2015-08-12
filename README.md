@@ -56,6 +56,40 @@ docker version
 ...
 ```
 
+### Using Docker Machine
+
+You can use [Docker Machine](https://docs.docker.com/machine/)'s generic driver to to add the box as a machine. First get the IP, SSH username and key for the box:
+
+```bash
+$ vagrant ssh-config
+Host default
+  HostName 10.20.30.40 <----
+  User docker          <----
+  Port 22
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /Users/username/.vagrant.d/insecure_private_key <---
+  IdentitiesOnly yes
+  LogLevel FATAL
+```
+
+Then register the box as a new Docker Machine:
+
+```bash
+$ docker-machine create -d generic --generic-ip-address 10.20.30.40 --generic-ssh-user docker --generic-ssh-key /Users/username/.vagrant.d/insecure_private_key machinename
+```
+
+After this, you can configure your environment with Docker Machine:
+
+```bash
+$ eval $(docker-machine env machinename)
+$ docker run --rm hello-world
+
+Hello from Docker.
+[...]
+```
+
 ## Shared Folders
 `/Users` path on you Mac is shared with boot2docker VM by default. It means
 that you can mount any directory placed in `/Users` on your Mac into the
