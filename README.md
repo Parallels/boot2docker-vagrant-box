@@ -7,13 +7,12 @@ If you work solely with Docker, this box lets you keep your Vagrant workflow and
 work in the most minimal Docker environment possible.
 
 ## Docker installation
-Docker client should be installed on your Mac.
-You can do it via official [boot2docker](https://docs.docker.com/installation/mac/)
-installer or [Homebrew](http://brew.sh/): `brew install docker`
+Docker client should be installed on your Mac. It is bundled to
+[Docker Toolbox](https://www.docker.com/toolbox)
 
 ## Usage
 
-The box is available on [Atlas](https://atlas.hashicorp.com/dduportal/boxes/boot2docker),
+The box is available on [Atlas](https://atlas.hashicorp.com/parallels/boxes/boot2docker),
 making it very easy to use it:
 
 ```bash
