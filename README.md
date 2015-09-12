@@ -33,6 +33,16 @@ config.vm.synced_folder ".", "/vagrant", type: "rsync"
     $ vagrant up
     ```
 
+* Network considerations :
+  * By default, we use a NAT interfaces, which have its ports 2375 and 2376 (Docker IANA ports) forwarded to the loopback (localhost) of your physical host.
+  * Also, we provide a private network that allow direct-IP exchange from your host. This is less portable but easier to use. This usage come from the officiel docker-machine system.
+  * If you face problems (Virtualbox errors, IP overlapping, etc.) with the private network, you can disable it with an environment variable :
+
+    ```bash
+    $ export B2D_DISABLE_PRIVATE_NETWORK=1
+    $ vagrant up
+    ```
+
 * If you want to tune contents (custom profile, install tools inside the VM) that do not fit into the "vagrant provisionning" lifecycle combinded with the un-persistence of boot2docker, the "bootlocal" system has been extended :
   * The [boot2docker FaQ](https://github.com/boot2docker/boot2docker/blob/master/doc/FAQ.md) says that you can provide a custom script, named bootlocal.sh to execute things at the end of the boot.
   * We customize in order to run that script from the /vagrant share when mounted, at the end of the boot.

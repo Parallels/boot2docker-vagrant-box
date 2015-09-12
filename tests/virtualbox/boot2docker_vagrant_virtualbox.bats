@@ -51,17 +51,24 @@ DOCKER_TARGET_VERSION=1.8.2
 	[ $(vagrant ssh -c 'ps aux | grep rpc.statd | wc -l' -- -n -T) -ge 1 ]
 }
 
-@test "We shave a default synced folder thru vboxsf instead of NFS" {
+@test "We have a default synced folder thru vboxsf instead of NFS" {
 	mount_point=$(vagrant ssh -c 'mount' | grep vboxsf | awk '{ print $3 }')
 	[ $(vagrant ssh -c "ls -l ${mount_point}/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
 }
 
-@test "We shave a NFS synced folder if B2D_NFS_SYNC is set (admin password required, will fail on Windows)" {
+@test "We have a NFS synced folder if B2D_NFS_SYNC is set (admin password required, will fail on Windows)" {
 	export B2D_NFS_SYNC=1
 	vagrant reload
 	mount_point=$(vagrant ssh -c 'mount' | grep nfs | awk '{ print $3 }')
 	[ $(vagrant ssh -c "ls -l $mount_point/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
 	unset B2D_NFS_SYNC
+}
+
+@test "We can disable the private network if B2D_DISABLE_PRIVATE_NETWORK is set" {
+	export B2D_DISABLE_PRIVATE_NETWORK=1
+	vagrant reload
+	[ $(vagrant ssh -c "ip addr show | grep -e 'eth.:' | wc -l" -- -n -T) -eq 1 ]
+	unset B2D_DISABLE_PRIVATE_NETWORK
 }
 
 @test "We can share folder thru rsync" {
