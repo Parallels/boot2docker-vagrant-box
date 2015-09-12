@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-  CURRENT_DIR = File.expand_path(File.dirname(__FILE__))
+  CURRENT_DIR = Dir.pwd
 
   config.ssh.shell = "sh"
   config.ssh.username = "docker"
@@ -22,6 +22,8 @@ Vagrant.configure("2") do |config|
     # Create a private network for accessing VM without NAT
     override.vm.network "private_network", ip: "192.168.10.10", id: "default-network", nic_type: "virtio"
   end
+
+  config.vm.provision "shell", inline: "[ ! -d /vagrant ] && ln -s #{CURRENT_DIR} /vagrant || true"
 
   # Add bootlocal support
   if File.file?('./bootlocal.sh')

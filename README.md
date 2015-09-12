@@ -54,10 +54,12 @@ Next, you need to configure your Docker environment :
 # For VirtualBox provider:
 export DOCKER_CERT_PATH=`pwd`/tls
 export DOCKER_HOST=tcp://192.168.10.10:2376
+export DOCKER_TLS_VERIFY=1
 
 # For Parallels provider:
 export DOCKER_CERT_PATH=`pwd`/tls
 export DOCKER_HOST="tcp://`vagrant ssh-config | sed -n "s/[ ]*HostName[ ]*//gp"`:2376"
+export DOCKER_TLS_VERIFY=1
 ```
 
 ## Building the Box
