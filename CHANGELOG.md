@@ -2,6 +2,7 @@
 
 ## Not released (dduportal-1.8.2)
 - Thanks to [ffung](https://github.com/dduportal/boot2docker-vagrant-box/pull/37), correcting an issue when mounting /vagrant and current working folder - See. https://github.com/dduportal/boot2docker-vagrant-box/issues/36
+- Moving boot2docker to 1.8.2 : https://github.com/boot2docker/boot2docker/releases/tag/v1.8.2
 
 ## 21/08/2015 (dduportal-1.8.1)
 - Thanks to [legal90 contribution](https://github.com/dduportal/boot2docker-vagrant-box/pull/33) moving to (boot2docker 1.8.1)[https://github.com/boot2docker/boot2docker/releases/tag/v1.8.1]
