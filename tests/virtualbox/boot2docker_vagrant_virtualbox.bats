@@ -53,14 +53,14 @@ DOCKER_TARGET_VERSION=1.9.0
 }
 
 @test "We have a default synced folder thru vboxsf instead of NFS" {
-	mount_point=$(vagrant ssh -c 'mount' | grep vboxsf | awk '{ print $3 }')
+	mount_point=$(vagrant ssh -c 'mount' | grep 'tests/virtualbox.*vboxsf' | awk '{ print $3 }')
 	[ $(vagrant ssh -c "ls -l ${mount_point}/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
 }
 
 @test "We have a NFS synced folder if B2D_NFS_SYNC is set (admin password required, will fail on Windows)" {
 	export B2D_NFS_SYNC=1
 	vagrant reload
-	mount_point=$(vagrant ssh -c 'mount' | grep nfs | awk '{ print $3 }')
+	mount_point=$(vagrant ssh -c 'mount' | grep 'tests/virtualbox.*nfs' | awk '{ print $3 }')
 	[ $(vagrant ssh -c "ls -l $mount_point/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
 	unset B2D_NFS_SYNC
 }

@@ -5,7 +5,7 @@ DOCKER_TARGET_VERSION=1.9.0
 # Assume that Vagrantfile exists and basebox is added
 @test "vagrant up" {
 	run vagrant destroy -f
-	run vagrant box remove boot2docker-virtualbox-test
+	run vagrant box remove boot2docker-parallels-test
 	cp vagrantfile.orig Vagrantfile
 	vagrant up --provider=parallels
 }
@@ -40,7 +40,7 @@ DOCKER_TARGET_VERSION=1.9.0
 }
 
 @test "Default synced folder is shared via prl_fs" {
-	mount_point=$(vagrant ssh -c 'mount' | grep prl_fs | awk '{ print $3 }')
+	mount_point=$(vagrant ssh -c 'mount' | grep 'tests/parallels.*prl_fs' | awk '{ print $3 }')
 	[ $(vagrant ssh -c "ls -l ${mount_point}/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
 }
 
@@ -55,7 +55,7 @@ DOCKER_TARGET_VERSION=1.9.0
 @test "Default synced folder is shared via NFS if B2D_NFS_SYNC is set" {
 	export B2D_NFS_SYNC=1
 	vagrant reload
-	mount_point=$(vagrant ssh -c 'mount' | grep nfs | awk '{ print $3 }')
+	mount_point=$(vagrant ssh -c 'mount' | grep 'tests/parallels.*nfs' | awk '{ print $3 }')
 	[ $(vagrant ssh -c "ls -l $mount_point/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
 	unset B2D_NFS_SYNC
 }
