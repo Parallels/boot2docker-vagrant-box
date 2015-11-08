@@ -3,6 +3,8 @@
 # Given i'm already in a Vagrantfile-ized folder
 # And the basebox has already been added to vagrant
 
+DOCKER_TARGET_VERSION=1.8.3
+
 @test "We can vagrant up the VM with basic settings" {
 	# Ensure the VM is stopped
 	run vagrant destroy -f
@@ -28,7 +30,7 @@
 	vagrant ssh -c 'docker ps'
 }
 
-DOCKER_TARGET_VERSION=1.8.2
+
 @test "Docker is version DOCKER_TARGET_VERSION=${DOCKER_TARGET_VERSION}" {
 	DOCKER_VERSION=$(vagrant ssh -c "docker version --format '{{.Server.Version}}'" -- -n -T)
 	[ "${DOCKER_VERSION}" == "${DOCKER_TARGET_VERSION}" ]

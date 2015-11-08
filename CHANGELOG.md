@@ -1,4 +1,6 @@
 
+## 08/11/2015 (dduportal-1.8.3)
+- Moving boot2docker to 1.8.3 : https://github.com/boot2docker/boot2docker/releases/tag/v1.8.3
 
 ## 12/09/2015 (dduportal-1.8.2)
 - Thanks to [ffung](https://github.com/dduportal/boot2docker-vagrant-box/pull/37), correcting an issue when mounting /vagrant and current working folder - See. https://github.com/dduportal/boot2docker-vagrant-box/issues/36
@@ -28,10 +30,10 @@
 
 ## 15/02/2015 (v1.5.0)
 - GH-6 : Adding a private id to the default private network in order to permit bypass at user level
-- Moving to [docker v1.5.0](https://github.com/docker/docker/blob/master/CHANGELOG.md#150-2015-02-10) + [boot2docker v1.5.0](https://github.com/boot2docker/boot2docker/releases/tag/v1.5.0) 
+- Moving to [docker v1.5.0](https://github.com/docker/docker/blob/master/CHANGELOG.md#150-2015-02-10) + [boot2docker v1.5.0](https://github.com/boot2docker/boot2docker/releases/tag/v1.5.0)
 - Support of rsync synced folder (rsync is installed in the box)
 - Removing the box-embedded iso (Is now dumped to the first partition of the HDD)
-- Adding a set of integration tests usings bats for testing the box with the vagrant provider 
+- Adding a set of integration tests usings bats for testing the box with the vagrant provider
 
 ## 13/01/2015 (v1.4.1-2)
 - GH-5 : NFS support for synced folder
@@ -75,7 +77,7 @@
 
 ## 15/06/2014 (v0.5.0)
 - Moving to the new IANA Docker port 2375, and let vagrant auto corrects when collision
-- Moving to boot2docker and Docker 1.0.0 
+- Moving to boot2docker and Docker 1.0.0
 - Using a custom Vagrantfile for building a b2d iso with vbox addition
 - Re-using temporarly mitchellh vagrantfile + build-iso workflow for "vagranti-zing" the b2d.iso
 - Updating build scripts (Unix/Windows) with packer building all types
