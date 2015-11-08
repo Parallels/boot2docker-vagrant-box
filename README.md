@@ -1,20 +1,17 @@
 # boot2docker Vagrant Box
 
 This repository contains the scripts necessary to create a Vagrant-compatible
-[boot2docker](https://github.com/boot2docker/boot2docker) box and is compatible with Docker v1.7.1
+[boot2docker](https://github.com/boot2docker/boot2docker) box.
 
 If you work solely with Docker, this box lets you keep your Vagrant workflow and work in the most minimal Docker environment possible.
 
 ## Usage
 
-The box is available on [Hashicrop's Atlas](https://atlas.hashicorp.com/dduportal/boxes/boot2docker), making it very easy to use it:
+The box is available on [Hashicorp's Atlas](https://atlas.hashicorp.com/dduportal/boxes/boot2docker), making it very easy to use it:
 
     $ vagrant init dduportal/boot2docker
     $ vagrant up
 
-If you want the actual box source file, you can download it from the [tags page](https://github.com/dduportal/boot2docker-vagrant-box/tags).
-
-On OS X, to use the docker client, follow the directions here: http://docs.docker.io/installation/mac/#docker-os-x-client (you'll need to export `DOCKER_HOST`). You should then be able to to run `docker version` from the host. [Homebrew](http://brew.sh) can also a good installation medium with ```brew update && brew install docker```
 
 
 ## Tips & tricks
@@ -35,7 +32,7 @@ config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
 * Network considerations :
   * By default, we use a NAT interfaces, which have its ports 2375 and 2376 (Docker IANA ports) forwarded to the loopback (localhost) of your physical host.
-  * Also, we provide a private network that allow direct-IP exchange from your host. This is less portable but easier to use. This usage come from the officiel docker-machine system.
+  * Also, we provide a private network that allow direct-IP exchange from your host. This is less portable but easier to use. This usage come from the official docker-machine system.
   * If you face problems (Virtualbox errors, IP overlapping, etc.) with the private network, you can disable it with an environment variable :
 
     ```bash
@@ -43,7 +40,7 @@ config.vm.synced_folder ".", "/vagrant", type: "rsync"
     $ vagrant up
     ```
 
-* If you want to tune contents (custom profile, install tools inside the VM) that do not fit into the "vagrant provisionning" lifecycle combinded with the un-persistence of boot2docker, the "bootlocal" system has been extended :
+* If you want to tune contents (custom profile, install tools inside the VM) that do not fit into the "vagrant provisioning" lifecycle combined with the un-persistence of boot2docker, the "bootlocal" system has been extended :
   * The [boot2docker FaQ](https://github.com/boot2docker/boot2docker/blob/master/doc/FAQ.md) says that you can provide a custom script, named bootlocal.sh to execute things at the end of the boot.
   * We customize in order to run that script from the /vagrant share when mounted, at the end of the boot.
   * So : just place a "bootlocal.sh" script alongside your Vagrantfile to customize what's inside your b2d VM.
@@ -53,7 +50,7 @@ config.vm.synced_folder ".", "/vagrant", type: "rsync"
 (Thanks to @Freyskeyd)
 
 ```
-# Regenerate certs for the newly created Iprivate network IP
+# Regenerate certs for the newly created private network IP
 sudo /etc/init.d/docker restart
 # Copy tls certs to the vagrant share to allow host to use it
 sudo cp -r /var/lib/boot2docker/tls /vagrant/
@@ -81,8 +78,8 @@ do so in seconds.
 To build the box, first install the following prerequisites:
 
   * [Make as workflow engine](http://www.gnu.org/software/make/)
-  * [Packer as vagrant basebox builder](http://www.packer.io) (at least version 0.7.5)
-  * [VirtualBox](http://www.virtualbox.org) (at least version 4.3.28) or [Parallels Desktop for Mac](http://www.parallels.com/products/desktop/) (version 9 or higher) [VMware is not implemented yet]
+  * [Packer as vagrant basebox builder](http://www.packer.io) (at least version 0.8.6)
+  * [VirtualBox](http://www.virtualbox.org) (at least version 5.0.8) or [Parallels Desktop for Mac](http://www.parallels.com/products/desktop/) (version 9 or higher) [VMware is not implemented yet]
   * [Parallels Virtualization SDK for Mac](http://www.parallels.com/download/pvsdk/) (only if you want to build the box for Parallels)
   * [curl for downloading things](http://curl.haxx.se)
   * [bats for testing](https://github.com/sstephenson/bats)

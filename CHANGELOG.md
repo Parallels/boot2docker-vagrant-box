@@ -1,4 +1,8 @@
 
+## 08/11/2015 (dduportal-1.9.0)
+- Thanks to [legal90](https://github.com/dduportal/boot2docker-vagrant-box/pull/40), upgrading to boot2docker 1.9.0 + acceptance tests
+- README update and corrects
+
 ## 08/11/2015 (dduportal-1.8.3)
 - Moving boot2docker to 1.8.3 : https://github.com/boot2docker/boot2docker/releases/tag/v1.8.3
 
