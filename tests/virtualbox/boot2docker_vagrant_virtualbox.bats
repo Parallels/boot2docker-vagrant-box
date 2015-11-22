@@ -3,7 +3,7 @@
 # Given i'm already in a Vagrantfile-ized folder
 # And the basebox has already been added to vagrant
 
-DOCKER_TARGET_VERSION=1.9.0
+DOCKER_TARGET_VERSION=1.9.1
 
 @test "We can vagrant up the VM with basic settings" {
 	# Ensure the VM is stopped
