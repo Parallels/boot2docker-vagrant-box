@@ -30,9 +30,13 @@ build-parallels: $(B2D_ISO_FILE)
 
 clean-virtualbox:
 	rm -f *_virtualbox.box $(B2D_ISO_FILE)
+	@cd tests/virtualbox; vagrant destroy -f || :
+	@cd tests/virtualbox; rm -f Vagrantfile
 
 clean-parallels:
 	rm -f *_parallels.box $(B2D_ISO_FILE)
+	@cd tests/parallels; vagrant destroy -f || :
+	@cd tests/parallels; rm -f Vagrantfile
 
 test-virtualbox:
 	@cd tests/virtualbox; bats --tap *.bats
@@ -40,6 +44,6 @@ test-virtualbox:
 test-parallels:
 	@cd tests/parallels; bats --tap *.bats
 
-.PHONY: all virtualbox parallels \
+.PHONY: all virtualbox parallels clean \
 	clean-virtualbox build-virtualbox test-virtualbox \
 	clean-parallels build-parallels test-parallels

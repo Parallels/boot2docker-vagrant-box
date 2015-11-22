@@ -1,6 +1,10 @@
 
 ## 08/11/2015 (dduportal-1.9.1)
 - Moving boot2docker to 1.9.1 : https://github.com/boot2docker/boot2docker/releases/tag/v1.9.1
+- Simplifying build : no more custom install of rsync since
+  * [This issue from amontaigu](https://github.com/dduportal/boot2docker-vagrant-box/issues/41) with solution
+  * [Vagrant handle well rsync installation for boto2docker now](https://github.com/mitchellh/vagrant/commit/26fe5ac89f4499e024f6ab12d87f97d61b212a86)
+  * Boot2docker now use Tiny Core 6.x in 64 bits : rsync > 3.1.x
 
 ## 08/11/2015 (dduportal-1.9.0)
 - Thanks to [legal90](https://github.com/dduportal/boot2docker-vagrant-box/pull/40), upgrading to boot2docker 1.9.0 + acceptance tests

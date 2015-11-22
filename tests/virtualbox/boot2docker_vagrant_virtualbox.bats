@@ -44,10 +44,6 @@ DOCKER_TARGET_VERSION=1.9.1
 	vagrant ssh -c 'echo OK'
 }
 
-@test "Rsync is installed inside the b2d" {
-	vagrant ssh -c "which rsync"
-}
-
 @test "The NFS client is started inside the VM" {
 	[ $(vagrant ssh -c 'ps aux | grep rpc.statd | wc -l' -- -n -T) -ge 1 ]
 }

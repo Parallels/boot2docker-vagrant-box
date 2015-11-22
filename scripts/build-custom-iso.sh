@@ -14,9 +14,9 @@ mkdir -p "${NEW_ISO_DIR}" "${EXTRACT_DIR}" "${MNT_TMP_DIR}" /mnt/syslinux
 
 # Install some custom tools on boot2docker
 # Note that even if the install worked, tce-loa return exit code to 1...
-su -c "tce-load -w -i mkisofs-tools" docker || :
-su -c "tce-load -w -i compiletc" docker || :
-su -c "tce-load -w -i autoconf" docker || :
+for TCEPKG in mkisofs-tools compiletc autoconf syslinux; do
+	su -c "tce-load -w -i ${TCEPKG}" docker || :
+done
 
 curl -L -o /tmp/syslinux.tcz http://tinycorelinux.net/6.x/x86/tcz/syslinux.tcz
 mount /tmp/syslinux.tcz /mnt/syslinux -o loop,ro
@@ -29,22 +29,13 @@ umount "${MNT_TMP_DIR}"
 
 # Unarchive the initrd.img to a Folder in $ROOTFS
 # uncompress with xz and use cpio to transcript to files/dirs
-# See https://github.com/boot2docker/boot2docker/blob/master/rootfs/make_iso.sh#L38 
+# See https://github.com/boot2docker/boot2docker/blob/master/rootfs/make_iso.sh#L38
 mv "${NEW_ISO_DIR}/boot/initrd.img" "${EXTRACT_DIR}/initrd.xz"
 cd "${EXTRACT_DIR}"
 /usr/local/bin/unxz -9 --format=lzma -d "${EXTRACT_DIR}/initrd.xz" --stdout | cpio -i -H newc -d
 cd -
 rm -f "${EXTRACT_DIR}/initrd.xz"
 
-# Install our custom tcz
-for TCZ_PACKAGE in popt rsync; do
-	curl -LO "http://tinycorelinux.net/5.x/x86/tcz/${TCZ_PACKAGE}.tcz"; \
-	mount -o loop "./${TCZ_PACKAGE}.tcz" "${MNT_TMP_DIR}"
-	cd "${MNT_TMP_DIR}"
-	cp -a ./* "${EXTRACT_DIR}/"
-	cd -
-	umount "${MNT_TMP_DIR}"
-done
 
 # Add option to the /opt/bootlocal.sh script
 echo "/usr/local/etc/init.d/nfs-client start" | tee -a "${EXTRACT_DIR}/opt/bootlocal.sh"
@@ -85,4 +76,3 @@ cd -
     -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
     -isohybrid-mbr /mnt/syslinux/usr/local/share/syslinux/isohdpfx.bin \
     -o "${NEW_B2D_ISO_PATH}" "${NEW_ISO_DIR}"
-
