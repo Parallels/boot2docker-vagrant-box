@@ -54,13 +54,12 @@
         {
             "type": "file",
             "source": "{{user `B2D_ISO_FILE`}}",
-            "destination": "/tmp/boot2docker-orig.iso"
+            "destination": "/tmp/boot2docker-vagrant.iso"
         },
         {
             "type": "shell",
             "execute_command": "{{ .Vars }} sudo -E -S sh '{{ .Path }}'",
             "scripts": [
-                "./scripts/build-custom-iso.sh",
                 "./scripts/b2d-provision.sh"
             ]
         }
