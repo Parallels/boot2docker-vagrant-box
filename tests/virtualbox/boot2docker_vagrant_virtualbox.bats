@@ -44,25 +44,28 @@ DOCKER_TARGET_VERSION=1.9.1
 	vagrant ssh -c 'echo OK'
 }
 
-@test "Rsync is installed inside the b2d" {
-	vagrant ssh -c "which rsync"
+@test "'/Users' and '.' synced folders are shared via vboxsf" {
+	run vagrant ssh -c 'mount | grep vboxsf'
+	[ "$status" -eq 0  ]
+	[ "${#lines[@]}" -ge 2 ]
+	run vagrant ssh -c "ls -l /vagrant/Vagrantfile"
+	[ "$status" -eq 0  ]
 }
 
 @test "The NFS client is started inside the VM" {
 	[ $(vagrant ssh -c 'ps aux | grep rpc.statd | wc -l' -- -n -T) -ge 1 ]
 }
 
-@test "We have a default synced folder thru vboxsf instead of NFS" {
-	mount_point=$(vagrant ssh -c 'mount' | grep 'tests/virtualbox.*vboxsf' | awk '{ print $3 }')
-	[ $(vagrant ssh -c "ls -l ${mount_point}/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
+@test "Reload VM with enabled B2D_NFS_SYNC" {
+	export B2D_NFS_SYNC=1
+	run vagrant reload
 }
 
-@test "We have a NFS synced folder if B2D_NFS_SYNC is set (admin password required, will fail on Windows)" {
-	export B2D_NFS_SYNC=1
-	vagrant reload
-	mount_point=$(vagrant ssh -c 'mount' | grep 'tests/virtualbox.*nfs' | awk '{ print $3 }')
-	[ $(vagrant ssh -c "ls -l $mount_point/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
-	unset B2D_NFS_SYNC
+@test "'/Users' synced folder is shared via NFS" {
+	run vagrant ssh -c "mount | grep '/Users.*nfs'"
+  [ "$status" -eq 0  ]
+  [ "${#lines[@]}" -ge 1 ]
+  unset B2D_NFS_SYNC
 }
 
 @test "We can disable the private network if B2D_DISABLE_PRIVATE_NETWORK is set" {

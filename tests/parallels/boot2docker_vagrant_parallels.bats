@@ -39,25 +39,28 @@ DOCKER_TARGET_VERSION=1.9.1
 	vagrant reload
 }
 
-@test "Default synced folder is shared via prl_fs" {
-	mount_point=$(vagrant ssh -c 'mount' | grep 'tests/parallels.*prl_fs' | awk '{ print $3 }')
-	[ $(vagrant ssh -c "ls -l ${mount_point}/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
-}
-
-@test "Rsync is installed in the VM" {
-	vagrant ssh -c "which rsync"
+@test "'/Users' and '.' synced folders are shared via prl_fs" {
+	run vagrant ssh -c 'mount | grep prl_fs'
+  [ "$status" -eq 0  ]
+  [ "${#lines[@]}" -ge 2 ]
+  run vagrant ssh -c "ls -l /vagrant/Vagrantfile"
+  [ "$status" -eq 0  ]
 }
 
 @test "NFS client is running in the VM" {
 	[ $(vagrant ssh -c 'ps aux | grep rpc.statd | wc -l' -- -n -T) -ge 1 ]
 }
 
-@test "Default synced folder is shared via NFS if B2D_NFS_SYNC is set" {
+@test "Reload VM with enabled B2D_NFS_SYNC" {
 	export B2D_NFS_SYNC=1
-	vagrant reload
-	mount_point=$(vagrant ssh -c 'mount' | grep 'tests/parallels.*nfs' | awk '{ print $3 }')
-	[ $(vagrant ssh -c "ls -l $mount_point/Vagrantfile | wc -l" -- -n -T) -ge 1 ]
-	unset B2D_NFS_SYNC
+	run vagrant reload
+}
+
+@test "'/Users' synced folder is shared via NFS" {
+	run vagrant ssh -c "mount | grep '/Users.*nfs'"
+  [ "$status" -eq 0  ]
+  [ "${#lines[@]}" -ge 1 ]
+  unset B2D_NFS_SYNC
 }
 
 @test "Default synced folder can be shared via rsync" {
