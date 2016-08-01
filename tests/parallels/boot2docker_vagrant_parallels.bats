@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-DOCKER_TARGET_VERSION=1.10.0
+DOCKER_TARGET_VERSION=1.12.0
 
 # Assume that Vagrantfile exists and basebox is added
 @test "vagrant up" {
