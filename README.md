@@ -108,7 +108,7 @@ To build the box, first install the following prerequisites:
 Then run this command to build the box for Parallels provider:
 
 ```
-make parallels
+make
 ```
 
 ## Authors

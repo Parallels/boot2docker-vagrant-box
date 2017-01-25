@@ -4,9 +4,7 @@ B2D_ISO_FILE := boot2docker.iso
 B2D_ISO_URL := https://github.com/boot2docker/boot2docker/releases/download/v$(BOOT2DOCKER_VERSION)/boot2docker.iso
 B2D_ISO_CHECKSUM := 1a22a334b60950024366c37e9ee752b1
 
-all: parallels virtualbox
-
-virtualbox:	clean-virtualbox build-virtualbox test-virtualbox
+default: parallels
 
 parallels: clean-parallels build-parallels test-parallels
 
@@ -16,34 +14,18 @@ $(B2D_ISO_FILE):
 $(PRL_B2D_ISO_FILE):
 	curl -L -o ${PRL_B2D_ISO_FILE} ${PRL_B2D_ISO_URL}
 
-build-virtualbox: $(B2D_ISO_FILE)
-	packer build -parallel=false -only=virtualbox-iso \
-		-var 'B2D_ISO_FILE=${B2D_ISO_FILE}' \
-		-var 'B2D_ISO_CHECKSUM=${B2D_ISO_CHECKSUM}' \
-		template.json
-
 build-parallels: $(B2D_ISO_FILE)
 	packer build -parallel=false -only=parallels-iso \
 		-var 'B2D_ISO_FILE=${B2D_ISO_FILE}' \
 		-var 'B2D_ISO_CHECKSUM=${B2D_ISO_CHECKSUM}' \
 		template.json
 
-clean-virtualbox:
-	rm -f *_virtualbox.box $(B2D_ISO_FILE)
-	@cd tests/virtualbox; vagrant destroy -f || :
-	@cd tests/virtualbox; rm -f Vagrantfile
-
 clean-parallels:
 	rm -f *_parallels.box $(B2D_ISO_FILE)
-	@cd tests/parallels; vagrant destroy -f || :
-	@cd tests/parallels; rm -f Vagrantfile
-
-test-virtualbox:
-	@cd tests/virtualbox; bats --tap *.bats
+	@cd ./tests; vagrant destroy -f || :
+	@cd ./tests; rm -f Vagrantfile
 
 test-parallels:
-	@cd tests/parallels; bats --tap *.bats
+	@cd ./tests; bats --tap *.bats
 
-.PHONY: all virtualbox parallels clean \
-	clean-virtualbox build-virtualbox test-virtualbox \
-	clean-parallels build-parallels test-parallels
+.PHONY: parallels clean clean-parallels build-parallels test-parallels
