@@ -21,7 +21,7 @@ build-parallels: $(B2D_ISO_FILE)
 		template.json
 
 clean-parallels:
-	rm -f *_parallels.box $(B2D_ISO_FILE)
+	rm -f *-parallels.box $(B2D_ISO_FILE)
 	@cd ./tests; vagrant destroy -f || :
 	@cd ./tests; rm -f Vagrantfile
 

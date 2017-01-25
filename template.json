@@ -39,6 +39,6 @@
     "post-processors": [{
         "type": "vagrant",
         "vagrantfile_template": "vagrantfile.tpl",
-        "output": "boot2docker_{{.Provider}}.box"
+        "output": "boot2docker-{{.Provider}}.box"
     }]
 }
