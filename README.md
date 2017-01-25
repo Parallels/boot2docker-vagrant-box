@@ -111,6 +111,12 @@ Then run this command to build the box for Parallels provider:
 make
 ```
 
+Execute this to run integration tests:
+
+```
+make test-parallels
+```
+
 ## Authors
 
 - Author:: Mikhail Zholobov (<legal90@gmail.com>)
