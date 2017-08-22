@@ -1,8 +1,8 @@
-BOOT2DOCKER_VERSION := 17.03.1-ce
+BOOT2DOCKER_VERSION := 17.06.0-ce
 
 B2D_ISO_FILE := boot2docker.iso
 B2D_ISO_URL := https://github.com/boot2docker/boot2docker/releases/download/v$(BOOT2DOCKER_VERSION)/boot2docker.iso
-B2D_ISO_CHECKSUM := 85f1947876c0f02e4dfbab838cc18d9b
+B2D_ISO_CHECKSUM := 5be6a9a57876b57b056cc640fa7b8534
 
 default: parallels
 
